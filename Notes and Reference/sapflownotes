@@ -1,0 +1,20 @@
+Conductivity calcs
+
+Dh = Carboy ht - balance ht
+Plant conductivity = =(flow*(length/100))/(Dh*10)
+Ks = Plant conductivity/Sapwood area 
+LSC = Plant conductivity/ leaf area
+Huber value = Sapwood area/leaf area
+
+Units?
+Water potential = MPa I assume (ranges 2-16ish)
+Leaf area = cm^2
+Length = cm
+Din and Dout = mm? um? cm if actually DBHish? 
+Sapwood area = pi*((Dout/60)/2)^2- pi*((Dout/60)/2)^2
+ -why divide by 60? where's that coming from 
+K: kg m-1 s-1 Mpa-1
+LSC: g m-1 s-1 MPa-1
+
+ADD back in max height information - to calculate PLC
+

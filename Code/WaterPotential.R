@@ -3,7 +3,7 @@ library(RSQLite)
 
 #FUNCTIONS
 
-#Error handling: 
+#Error handling:
 #Omit any flagged results
 #Date compensation: If date(sapflow) doesn't match date(WP), check +/- 2 (more?) - use try/catch?
 #days
@@ -16,7 +16,7 @@ steadyStateFlow <- function(df) {
   start <- numeric(nrows(unique(df)))
   end <- numeric(nrows(unique(df)))
   i <- 1
-  
+
   #Handle 2002 vs 2003; multiple days?
   #Runs through each tree
   for (tree in unique(df$TreeID)){
@@ -30,8 +30,8 @@ steadyStateFlow <- function(df) {
     } else{
       n=12; s = 1
     }
-    
-    #Initialize 
+
+    #Initialize
     j = 1
     min <- 10^6 #Setting as very large number so default value will never be min
     f <- 0
@@ -75,5 +75,3 @@ sapflow <- steadystateFlow(data)
 #Compile data table
 
 #Export to database
-
-

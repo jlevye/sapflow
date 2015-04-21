@@ -10,7 +10,7 @@ library(ggplot2)
 #Get the data needed
 setwd("~/Documents/School/GradSchool/Sap Flow")
 db <- dbConnect(SQLite(), dbname="SapFlow")
-initExtensions(db)
+initExtension(db)
 
 dbSendQuery(db, "ALTER TABLE soilmoisture ADD COLUMN WaterContent")
 dbSendQuery(db, 'UPDATE soilmoisture SET WaterContent = 0.31217*log(TDR-7.64) - 0.3912')

@@ -68,6 +68,15 @@ ggplot(daily, aes(x = Day, y = Precip)) + geom_point(aes(color=Year)) + xlab("Da
 totalrain <- setNames(aggregate(daily$Precip, by = list(daily$Year), FUN=sum), c("Year","Precip"))
 ggplot(totalrain, aes(x = Year, y = Precip)) + geom_bar()
 
+daily$RainBin <- ifelse(daily$Precip == 0, 0, 1)
+daily$RainBin <- as.factor(daily$RainBin)
+ggplot(daily, aes(x=as.factor(Year), fill=RainBin)) + geom_bar(position="fill") + labs(x="Year",y="", title="Proportion of Days Without Rain") + scale_fill_discrete(name="Rain?",labels=c("No","Yes"))
+
+avgs <- ddply(daily, .(Year), summarize, mean=mean(Precip, na.rm=T), sd = sd(Precip, na.rm=T))
+ggplot(avgs, aes(x=as.factor(Year),y=mean, fill=Year)) + geom_bar(stat="identity") + geom_errorbar(aes(ymin=0, ymax=mean+sd), width=0.25) + labs(title="Mean Daily Precip", x="Year",y="Precip (in)")
+
+
+
 #Comparing Temp Data
 temp <- dbGetQuery(db, "SELECT Year, JulDayEST as Day, TimeEST as Time, Temp FROM weather")
 maxTemp <- aggregate(temp$Temp, by=list(temp$Year, temp$Day), FUN=max)
@@ -107,3 +116,7 @@ vpd$DateTime <- as.POSIXct(paste(as.character(vpd$Day), vpd$Time), format="%j %H
 hourlyvpd <- setNames(aggregate(vpd$VPD, by = list(vpd$Year, vpd$Day, hour(vpd$DateTime)), FUN=mean), c("Year","Day","Hour","VPD"))
 hourlyvpd$DateTime <- ISOdatetime(year=0, month=month(as.POSIXct(as.character(hourlyvpd$Day), format="%j")), day = day(as.POSIXct(as.character(hourlyvpd$Day), format="%j")), hour=hourlyvpd$Hour, min=0, sec=0)
 ggplot(hourlyvpd, aes(x = DateTime, y = VPD, color=Year)) + geom_point() + xlab("Date and Time (hourly)")
+
+
+x <- c(0:1000)
+plot(x, dbinom(x, 1000, 0.5), type="l", xlab="Number of Heads", main="Prob. of X Heads in 1000 coin flips", ylab="Probability")

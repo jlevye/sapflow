@@ -15,7 +15,7 @@ initExtension(db)
 dbSendQuery(db, "ALTER TABLE soilmoisture ADD COLUMN WaterContent")
 dbSendQuery(db, 'UPDATE soilmoisture SET WaterContent = 0.31217*log(TDR-7.64) - 0.3912')
 
-soilFull <- dbGetQuery(db, "SELECT soilmoisture.Year, soulmoisture.JulDay, soilmoisture.TreeID, soilmoisture.WaterContent TreeData.TreeID, TreeData.Elevation FROM soilmoisture INNER JOIN TreeData on soilmoisture.TreeID = TreeData.TreeID")
+soilFull <- dbGetQuery(db, "SELECT soilmoisture.Year, soilmoisture.JulDay, soilmoisture.TreeID, soilmoisture.WaterContent, TreeData.TreeID, TreeData.Elevation FROM soilmoisture INNER JOIN TreeData on soilmoisture.TreeID = TreeData.TreeID")
 
 #Processing data pulled from DB
 soilFull <- soilFull[,-5] #Deletes duplicate column
@@ -31,19 +31,19 @@ soil.b <- subset(soil.a, soil.a$WT != "Mid")
 m1 <- lm(WaterContent ~ Year*Elevation*Day, data = soil.a)
 summary(m1)
 plot(allEffects(m1))
-ggplot(soil.a) + geom_points(aes(Elevation,WaterContent, color = Year))
-ggplot(soil.a) + geom_points(aes(Day,WaterContent, color = Year))
+ggplot(soil.a) + geom_point(aes(Elevation,WaterContent, color = Year))
+ggplot(soil.a) + geom_point(aes(Day,WaterContent, color = Year))
 
 #Elevation as factor (WT)
 m2 <- lm(WaterContent~ WT*Year*Day, data = soil.b)
 summary(m2) #Showed day not significant (either on its own or interacting), so simplify:
-m3 <- lm(WaterContetn ~ WT*Year, data = soil.b )
+m3 <- lm(WaterContent ~ WT*Year, data = soil.b )
 summary(m3)
 plot(allEffects(m3))
 
 #Bar Graphs
-summ <- ddply(soil.b, .(Year, WT), summarize, mean = mean(waterContent), sd = sd(WaterContent))
-ggplot(summ, aes(Year, mean, fill=WT)) + geom_bar(position = position_dodge(), stat "identity") + geom_errorbar(aes(ymin=mean-sd, ymax = mean+sd), width = 0.2, position = position_dodge(0.9))
+summ <- ddply(soil.b, .(Year, WT), summarize, mean = mean(WaterContent), sd = sd(WaterContent))
+ggplot(summ, aes(Year, mean, fill=WT)) + geom_bar(position = position_dodge(), stat="identity") + geom_errorbar(aes(ymin=mean-sd, ymax = mean+sd), width = 0.2, position = position_dodge(0.9))
 
 #Future analysis goes here
 

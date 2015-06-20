@@ -14,10 +14,10 @@ cond <- dbGetQuery(db, "SELECT * FROM conductivity")
 cond <- cond[2:nrow(cond),] #Drops messed up first row
 cond$Date <- as.Date(cond$Date, "%m/%d/%Y")
 l <- c(11.6, 12.1, 9.9, 11.6, 9.6, 9.6, 7.9, 16.9, 7.7, 6.1, 11.1, 11.6, 6, 7.1, 9.3, 7.1, 11.9, 8.4, 9.1, 7.2, 10.7, 9.8, 7.5, 12.2,7.8, NA, NA)
-cond$Length <- h
+cond$Length <- l
 cond$HuberValue <- cond$SA/cond$LeafArea
 cond$dH <- (cond$CarboyHT - cond$BalanceHT)/100
-cond$PlantCond <- cond$Flow*(cond$LeafLength/100)/cond$dH*10
+cond$PlantCond <- cond$Flow*(cond$Length/100)/cond$dH*10
 cond$Ks <- cond$PlantCond/cond$SA
 cond$LSC <- cond$PlantCond/cond$LeafArea
 

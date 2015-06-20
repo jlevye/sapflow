@@ -3,7 +3,7 @@ library(RSQLite)
 #any additional libraries needed for analysis
 library(lubridate)
 library(ggplot2)
-source("~/Documents/School/GradSchool/Sap Flow/mulitplot.R")
+source("~/Documents/School/GradSchool/Sap Flow/multiplot.R")
 
 #Connect the DB
 setwd("~/Documents/School/GradSchool/Sap Flow")
@@ -117,6 +117,3 @@ hourlyvpd <- setNames(aggregate(vpd$VPD, by = list(vpd$Year, vpd$Day, hour(vpd$D
 hourlyvpd$DateTime <- ISOdatetime(year=0, month=month(as.POSIXct(as.character(hourlyvpd$Day), format="%j")), day = day(as.POSIXct(as.character(hourlyvpd$Day), format="%j")), hour=hourlyvpd$Hour, min=0, sec=0)
 ggplot(hourlyvpd, aes(x = DateTime, y = VPD, color=Year)) + geom_point() + xlab("Date and Time (hourly)")
 
-
-x <- c(0:1000)
-plot(x, dbinom(x, 1000, 0.5), type="l", xlab="Number of Heads", main="Prob. of X Heads in 1000 coin flips", ylab="Probability")

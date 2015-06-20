@@ -31,5 +31,24 @@ iso.el$Species <- as.factor(substr(iso.el$TreeID,1,2))
 iso.el <- iso.el[,-5]
 p2 <- ggplot(iso.el, aes(x=Elevation, y=d13C, color=Species)) + facet_grid(Year~.) + geom_point()
 
+for (i in 1:47){
+  name <- treeids[i]
+    for (j in 1:nrow(subset(iso, iso$TreeID==name))){
+      day <- iso$JulDay[j]
+      if (is.element(day, soil.a$Day[which(soil.a$TreeID==name)])) {
+        iso$moist[which(iso$JulDay==day & iso$TreeID==name)] <- soil.a$WaterContent[which(soil.a$JulDay==day & soil.a$TreeID==name)]
+        print("iso$moist set")
+      }
+      else {
+        for (k in 1:10) {
+          if (is.element(day-k, soil.a$Day[which(soil.a$TreeID==name)])) {
+            iso$moist[which(iso$JulDay==day & iso$TreeID==name)] <- soil.a$WaterContent[which(soil.a$JulDay==day-k & soil.a$TreeID==name)]
+            print("iso$moist set")
+            break
+        }
+      }
+    }
+  }
+}
 
 
